@@ -11,12 +11,16 @@ import { useNavigation } from '@react-navigation/native';
 
 // Functions
 import {
+  requestAppTrackingPermissionIOS,
   requestCameraPermission,
+  requestCameraPermissionIOS,
   requestGalleryPermission,
+  requestGalleryPermissionIOS,
 } from '../../helpers/requestPermissions';
 
 // Types
 import { CrewMemberNavigationProp, CrewMemberType } from '../../interfaces';
+import { RESULTS } from 'react-native-permissions';
 
 type Props = {
   disabled: boolean,
@@ -30,7 +34,21 @@ const PressBox: React.FC<Props> = ({ children, disabled, crewMember }) => {
       disabled={disabled}
       activeOpacity={0.7}
       onPress={async () => {
-        if (IS_IOS) { console.log('ios') }
+        if (IS_IOS) {
+          const grantedTracking = await requestAppTrackingPermissionIOS();
+          const grantedCamera = await requestCameraPermissionIOS();
+          const grantedGallery = await requestGalleryPermissionIOS();
+          if (grantedTracking === RESULTS.GRANTED && grantedCamera === RESULTS.GRANTED && grantedGallery === RESULTS.GRANTED) {
+            navigation.navigate('CrewMember', { props: crewMember });
+          }
+          else {
+            Alert.alert(
+              'Error',
+              'You need to enable App Tracking, Camera and Gallery permission to be able to acces crew member.',
+              [{ text: 'OK', onPress: () => { } }],
+            );
+          }
+        }
         else {
           const grantedCamera = await requestCameraPermission();
           const grantedGallery = await requestGalleryPermission();
