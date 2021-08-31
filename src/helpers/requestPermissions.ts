@@ -8,8 +8,8 @@ export const requestCameraPermission = async () => {
     if (grantedCamera === PermissionsAndroid.RESULTS.GRANTED) {
       return PermissionsAndroid.RESULTS.GRANTED;
     }
-  } catch (err) {
-    return err;
+  } catch (error) {
+    return error;
   }
 };
 
@@ -21,7 +21,7 @@ export const requestGalleryPermission = async () => {
     if (grantedGallery === PermissionsAndroid.RESULTS.GRANTED) {
       return PermissionsAndroid.RESULTS.GRANTED;
     }
-  } catch (err) {
-    return err;
+  } catch (error) {
+    return error;
   }
 };

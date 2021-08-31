@@ -4,7 +4,7 @@ import React from 'react';
 import { Alert, PermissionsAndroid, TouchableOpacity } from 'react-native';
 
 // Utils
-import { WINDOW_DEVICE_WIDTH } from '../../utils/constants';
+import { IS_IOS, WINDOW_DEVICE_WIDTH } from '../../utils/constants';
 
 // Navigation
 import { useNavigation } from '@react-navigation/native';
@@ -30,20 +30,24 @@ const PressBox: React.FC<Props> = ({ children, disabled, crewMember }) => {
       disabled={disabled}
       activeOpacity={0.7}
       onPress={async () => {
-        const grantedCamera = await requestCameraPermission();
-        const grantedGallery = await requestGalleryPermission();
-        if (
-          grantedCamera === PermissionsAndroid.RESULTS.GRANTED &&
-          grantedGallery === PermissionsAndroid.RESULTS.GRANTED
-        ) {
-          navigation.navigate('CrewMember', { props: crewMember });
-        } else {
-          Alert.alert(
-            'Error',
-            'You need to enable Camera and Gallery permission to be able to acces crew member.',
-            [{ text: 'OK', onPress: () => { } }],
-          );
+        if (IS_IOS) { console.log('ios') }
+        else {
+          const grantedCamera = await requestCameraPermission();
+          const grantedGallery = await requestGalleryPermission();
+          if (
+            grantedCamera === PermissionsAndroid.RESULTS.GRANTED &&
+            grantedGallery === PermissionsAndroid.RESULTS.GRANTED
+          ) {
+            navigation.navigate('CrewMember', { props: crewMember });
+          } else {
+            Alert.alert(
+              'Error',
+              'You need to enable Camera and Gallery permission to be able to acces crew member.',
+              [{ text: 'OK', onPress: () => { } }],
+            );
+          }
         }
+
       }}
       style={{
         width: WINDOW_DEVICE_WIDTH * 0.9,

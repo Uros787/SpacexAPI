@@ -11,11 +11,11 @@ import {
 } from 'react-native';
 import Card from '../../components/organisms/Card';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import OfflineNotice from '../../components/molecules/OfflineNotice';
 
 // API
 import { getCrewMembers } from '../../api/fetchAPI';
 import NetInfo from "@react-native-community/netinfo";
-import OfflineNotice from '../../components/molecules/OfflineNotice';
 
 const CrewMembers: React.FC = () => {
     const [isLoading, setLoading] = useState<Boolean>(true);
